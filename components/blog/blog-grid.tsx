@@ -5,19 +5,35 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { useBlogPosts, useCategories } from "@/hooks/use-blog"
+import { useBlogPosts } from "@/hooks/use-blog"
 import { useLocale } from "@/lib/locale-context"
 
 export function BlogGrid() {
   const { posts, loading } = useBlogPosts()
-  const { categories } = useCategories()
   const { locale, message } = useLocale()
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
+  const translatedCategories = Array.from(
+    new Set(
+      posts
+        .map((post) => post.translated?.[locale]?.category)
+        .filter((c): c is string => Boolean(c))
+    )
+  )
+
   const filteredPosts = selectedCategory
-    ? posts.filter((post) => post.category === selectedCategory)
+    ? posts.filter(
+      (post) => post.translated?.[locale]?.category === selectedCategory
+    )
     : posts
 
   if (loading) {
@@ -39,7 +55,9 @@ export function BlogGrid() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto space-y-4"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-balance">{message("blog_page_title")}</h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-balance">
+              {message("blog_page_title")}
+            </h1>
             <p className="text-lg md:text-xl text-muted-foreground text-pretty">
               {message("blog_page_subtitle")}
             </p>
@@ -58,7 +76,8 @@ export function BlogGrid() {
             >
               {message("blog_all_posts")}
             </Button>
-            {categories.map((category) => (
+
+            {translatedCategories.map((category) => (
               <Button
                 key={category}
                 variant={selectedCategory === category ? "default" : "outline"}
@@ -77,10 +96,8 @@ export function BlogGrid() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {filteredPosts.map((post, index) => {
-              const translated = post.translated?.[locale] || {
-                title: post.title,
-                excerpt: post.excerpt,
-              }
+              const translated = post.translated?.[locale]
+              if (!translated) return null
 
               return (
                 <motion.div
@@ -100,10 +117,11 @@ export function BlogGrid() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
                         <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">
-                          {post.category}
+                          {translated.category}
                         </Badge>
                       </div>
                     </Link>
+
                     <CardHeader>
                       <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
                         <div className="flex items-center gap-1">
@@ -122,16 +140,24 @@ export function BlogGrid() {
                           </span>
                         </div>
                       </div>
+
                       <CardTitle className="text-xl">
-                        <Link href={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="hover:text-primary transition-colors"
+                        >
                           {translated.title}
                         </Link>
                       </CardTitle>
-                      <CardDescription className="line-clamp-2">{translated.excerpt}</CardDescription>
+
+                      <CardDescription className="line-clamp-2">
+                        {translated.excerpt}
+                      </CardDescription>
                     </CardHeader>
+
                     <CardContent className="flex-1">
                       <div className="flex flex-wrap gap-2">
-                        {post.tags.slice(0, 3).map((tag) => (
+                        {translated.tags.slice(0, 3).map((tag) => (
                           <Badge key={tag} variant="outline" className="text-xs">
                             <Tag className="h-3 w-3 mr-1" />
                             {tag}
@@ -139,8 +165,13 @@ export function BlogGrid() {
                         ))}
                       </div>
                     </CardContent>
+
                     <CardFooter>
-                      <Button variant="ghost" asChild className="w-full group/btn">
+                      <Button
+                        variant="ghost"
+                        asChild
+                        className="w-full group/btn"
+                      >
                         <Link href={`/blog/${post.slug}`}>
                           {message("blog_read_article")}
                           <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />

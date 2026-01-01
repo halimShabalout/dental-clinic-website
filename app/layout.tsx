@@ -6,7 +6,8 @@ import { LocaleProvider } from "@/lib/locale-context"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
-
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 const geist = Geist({ subsets: ["latin"] })
 const geistMono = Geist_Mono({ subsets: ["latin"] })
 const ibmPlexArabic = IBM_Plex_Sans_Arabic({
@@ -124,7 +125,15 @@ export default function RootLayout({
       </head>
       <body className={`font-sans antialiased ${ibmPlexArabic.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <LocaleProvider>{children}</LocaleProvider>
+          <LocaleProvider>
+            <div className="min-h-screen flex flex-col">
+              <SiteHeader />
+              <main className="flex-1">
+                {children}
+              </main>
+              <SiteFooter />
+            </div>
+          </LocaleProvider>
         </ThemeProvider>
         <Toaster />
         <Analytics />

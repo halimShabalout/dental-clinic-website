@@ -2,14 +2,14 @@ import type { Doctor } from "@/types"
 
 export const doctorData: Doctor = {
   id: "1",
-  imageUrl: "/professional-male-dentist-in-white-coat.jpg",
+  imageUrl: "/dr-ayman.png",
 
   translated: {
     en: {
       name: "Dr. Ayman Zain",
       title: "Orthodontist & Clear Aligner Specialist",
       specialization: "Orthodontics & Clear Aligners",
-      bio: "Dr. Ayman Zain is a leading orthodontist with over 15 years of experience in transforming smiles through innovative clear aligner technology. His passion for combining cutting-edge orthodontic techniques with personalized patient care has helped thousands achieve their dream smiles.",
+      bio: "Dr. Ayman Zain is a leading orthodontist with over 23 years of experience in transforming smiles through innovative clear aligner technology. His passion for combining cutting-edge orthodontic techniques with personalized patient care has helped thousands achieve their dream smiles.",
       education: [
         "Doctor of Dental Surgery (DDS) - Cairo University, 2008",
         "Master of Orthodontics - Alexandria University, 2012",
@@ -29,7 +29,7 @@ export const doctorData: Doctor = {
       name: "د. أيمن زين",
       title: "أخصائي تقويم الأسنان وتقويم الشفاف",
       specialization: "تقويم الأسنان والتقويم الشفاف",
-      bio: "د. أيمن زين هو أحد أطباء التقويم الرائدين ولديه أكثر من 15 عامًا من الخبرة في تحويل الابتسامات باستخدام تقنية التقويم الشفاف المبتكرة. شغفه في دمج تقنيات التقويم المتقدمة مع رعاية شخصية للمرضى ساعد آلاف الأشخاص في تحقيق ابتسامات أحلامهم.",
+      bio: "د. أيمن زين هو أحد أطباء التقويم الرائدين ولديه أكثر من 23 عامًا من الخبرة في تحويل الابتسامات باستخدام تقنية التقويم الشفاف المبتكرة. شغفه في دمج تقنيات التقويم المتقدمة مع رعاية شخصية للمرضى ساعد آلاف الأشخاص في تحقيق ابتسامات أحلامهم.",
       education: [
         "دكتوراه في جراحة الأسنان (DDS) - جامعة القاهرة، 2008",
         "ماجستير في تقويم الأسنان - جامعة الإسكندرية، 2012",

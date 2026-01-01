@@ -75,26 +75,26 @@ export interface Testimonial {
 export interface BlogPost {
   id: string
   slug: string
-  title: string
-  excerpt: string
-  content: string
-  author: string
   publishedAt: string
   updatedAt: string
   imageUrl: string
-  category: string
-  tags: string[]
   readTime: number
   translated?: {
     en: {
+      category: string
       title: string
       excerpt: string
       content: string
+      author: string
+      tags: string[]
     }
     ar: {
+      category: string
       title: string
       excerpt: string
       content: string
+      author: string
+      tags: string[]
     }
   }
 }

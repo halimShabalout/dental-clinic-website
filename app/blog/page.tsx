@@ -1,23 +1,20 @@
 import type { Metadata } from "next"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { BlogGrid } from "@/components/blog/blog-grid"
 
 export const metadata: Metadata = {
-  title: "Orthodontics Blog - Tips, Guides & Insights | Dr. Ayman Zain",
+  title: "مدونة تقويم الأسنان – نصائح، مقالات وإرشادات | د. أيمن زين",
   description:
-    "Explore expert articles on clear aligners, orthodontics, dental care, and smile transformation. Stay informed with the latest insights from Dr. Ayman Zain.",
-  keywords: ["orthodontics blog", "clear aligners guide", "dental care tips", "smile transformation"],
+    "استكشف مقالات متخصصة حول التقويم الشفاف، تقويم الأسنان، العناية بالأسنان، وتحويل الابتسامة. تابع أحدث النصائح والإرشادات من د. أيمن زين.",
+  keywords: [
+    "مدونة تقويم الأسنان",
+    "تقويم شفاف",
+    "نصائح العناية بالأسنان",
+    "تصحيح الابتسامة",
+    "دكتور تقويم أسنان",
+    "تقويم الأسنان للأطفال والكبار",
+  ],
 }
 
 export default function BlogPage() {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <BlogGrid />
-      </main>
-      <SiteFooter />
-    </div>
-  )
+  return <BlogGrid />
 }
