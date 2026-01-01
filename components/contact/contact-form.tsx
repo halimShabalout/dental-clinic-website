@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useLocale } from "@/lib/locale-context"
 
 export function ContactForm() {
-  const { t } = useLocale()
+  const { message } = useLocale()
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
@@ -54,7 +54,7 @@ export function ContactForm() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name">{t.common.name}</Label>
+              <Label htmlFor="name">{message("common_name")}</Label>
               <Input
                 id="name"
                 name="name"
@@ -66,7 +66,7 @@ export function ContactForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">{t.common.email}</Label>
+              <Label htmlFor="email">{message("common_email")}</Label>
               <Input
                 id="email"
                 name="email"
@@ -79,7 +79,7 @@ export function ContactForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">{t.common.phone}</Label>
+              <Label htmlFor="phone">{message("common_phone")}</Label>
               <Input
                 id="phone"
                 name="phone"
@@ -92,7 +92,7 @@ export function ContactForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message">{t.common.message}</Label>
+              <Label htmlFor="message">{message("common_message")}</Label>
               <Textarea
                 id="message"
                 name="message"
@@ -106,10 +106,10 @@ export function ContactForm() {
 
             <Button type="submit" size="lg" className="w-full group" disabled={isSubmitting}>
               {isSubmitting ? (
-                t.common.loading
+                message("common_loading")
               ) : (
                 <>
-                  {t.common.submit}
+                  {message("common_submit")}
                   <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </>
               )}

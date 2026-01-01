@@ -1,24 +1,31 @@
 import type { Metadata } from "next"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { ServicesGrid } from "@/components/services/services-grid"
 import { CTASection } from "@/components/home/cta-section"
 
 export const metadata: Metadata = {
-  title: "Orthodontic Services - Clear Aligners & Braces | Dr. Ayman Zain",
+  title: "خدمات تقويم الأسنان – التقويم الشفاف والأسلاك | د. أيمن زين",
   description:
-    "Explore our comprehensive orthodontic services including clear aligners, traditional braces, and personalized treatment plans. Transform your smile with advanced technology.",
+    "اكتشف خدماتنا الشاملة في تقويم الأسنان، بما في ذلك التقويم الشفاف، والأسلاك التقليدية، وخطط العلاج الشخصية. احصل على ابتسامة مثالية باستخدام أحدث التقنيات.",
+  keywords: [
+    "خدمات تقويم الأسنان",
+    "تقويم شفاف مكة",
+    "تقويم أسنان أسلاك",
+    "خطط علاج شخصية",
+    "دكتور أيمن زين",
+  ],
+  openGraph: {
+    title: "خدمات تقويم الأسنان – د. أيمن زين",
+    description:
+      "استكشف خدماتنا في التقويم الشفاف والأسلاك وخطط العلاج المخصصة لتحسين ابتسامتك.",
+    type: "website",
+  },
 }
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <ServicesGrid />
-        <CTASection />
-      </main>
-      <SiteFooter />
-    </div>
+    <>
+      <ServicesGrid />
+      <CTASection />
+    </>
   )
 }

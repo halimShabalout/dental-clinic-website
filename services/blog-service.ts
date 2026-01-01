@@ -1,5 +1,3 @@
-// Service layer for blog data - simulates API calls
-
 import { blogPostsData } from "@/mock-data/blog"
 import type { BlogPost } from "@/types"
 

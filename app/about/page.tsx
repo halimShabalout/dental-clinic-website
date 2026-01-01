@@ -1,24 +1,28 @@
-import type { Metadata } from "next"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import { DoctorProfile } from "@/components/about/doctor-profile"
-import { CTASection } from "@/components/home/cta-section"
+import type { Metadata } from "next";
+import { DoctorProfile } from "@/components/about/doctor-profile";
+import { CTASection } from "@/components/home/cta-section";
 
 export const metadata: Metadata = {
-  title: "About Dr. Ayman Zain - Expert Orthodontist | Clear Aligner Specialist",
+  title: "عن الدكتور أيمن زين | أخصائي تقويم الأسنان",
   description:
-    "Meet Dr. Ayman Zain, a leading orthodontist with 23+ years of experience in clear aligner therapy and smile transformation. Learn about his expertise, education, and patient-centered approach.",
-}
+    "تعرّف على الدكتور أيمن زين، أخصائي تقويم الأسنان بخبرة تزيد عن 23 عامًا.",
+  keywords: [
+    "تقويم أسنان",
+    "تقويم شفاف",
+    "دكتور تقويم أسنان مكة",
+    "تقويم بدون أسلاك",
+    "تقويم الأسنان للأطفال والكبار",
+    "تقويم الأسنان مكة",
+    "Dr Ayman Zain",
+    "Orthodontist Mecca",
+  ],
+};
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <DoctorProfile />
-        <CTASection />
-      </main>
-      <SiteFooter />
-    </div>
-  )
+    <>
+      <DoctorProfile />
+      <CTASection />
+    </>
+  );
 }
