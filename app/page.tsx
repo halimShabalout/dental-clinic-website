@@ -1,19 +1,13 @@
-import { HeroSection } from "@/components/home/hero-section"
-import { StatsSection } from "@/components/home/stats-section"
-import { ServicesSection } from "@/components/home/services-section"
-import { BeforeAfterSection } from "@/components/home/before-after-section"
-import { TestimonialsSection } from "@/components/home/testimonials-section"
-import { CTASection } from "@/components/home/cta-section"
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
-  return (
-    <>
-      <HeroSection />
-      <StatsSection />
-      <ServicesSection />
-      <BeforeAfterSection />
-      <TestimonialsSection />
-      <CTASection />
-    </>
-  )
+export default function Page() {
+  const lang =
+    (typeof document !== "undefined"
+      ? document.cookie
+          .split("; ")
+          .find((c) => c.startsWith("NEXT_LOCALE="))
+          ?.split("=")[1]
+      : null) || "en";
+
+  redirect(`/${lang}`);
 }

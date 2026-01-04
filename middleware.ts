@@ -1,20 +1,31 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+const locales = ["en", "ar"];
+const defaultLocale = "ar";
 
 export function middleware(request: NextRequest) {
-  const langCookie = request.cookies.get("language")?.value
+    const pathname = request.nextUrl.pathname;
 
-  const lang =
-    langCookie === "en" || langCookie === "ar"
-      ? langCookie
-      : "ar"
+    const pathnameIsMissingLocale = locales.every(
+        (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+    );
 
-  const response = NextResponse.next()
-  response.headers.set("x-language", lang)
+    if (pathnameIsMissingLocale) {
+        const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value;
 
-  return response
+        const locale = (cookieLocale && locales.includes(cookieLocale))
+            ? cookieLocale
+            : defaultLocale;
+
+        return NextResponse.redirect(
+            new URL(`/${locale}${pathname}`, request.url)
+        );
+    }
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|favicon.ico).*)"],
-}
+    matcher: [
+        "/((?!_next|api|favicon.ico|.*\\..*).*)",
+    ],
+};
