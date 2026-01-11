@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { motion } from "framer-motion"
 import Link from "next/link"
@@ -6,8 +6,13 @@ import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLocale } from "@/lib/locale-context"
 
-export function HeroSection() {
+interface HeroSectionProps {
+  lang: 'en' | 'ar'
+}
+
+const HeroSection = ({ lang }: HeroSectionProps) => {
   const { message, dir } = useLocale()
+  const isRtl = dir === 'rtl'
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
@@ -16,35 +21,21 @@ export function HeroSection() {
 
       {/* Decorative elements */}
       <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
       />
       <motion.div
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
+        animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-20 left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className={`grid lg:grid-cols-2 gap-12 items-center ${isRtl ? 'text-right' : 'text-left'}`}>
           {/* Content */}
           <motion.div
-            initial={{ opacity: 0, x: dir === "rtl" ? 50 : -50 }}
+            initial={{ opacity: 0, x: isRtl ? 50 : -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="space-y-6"
@@ -81,34 +72,34 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="flex flex-wrap gap-4"
+              className={`flex flex-wrap gap-4 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}
             >
               <Button size="lg" asChild className="group">
-                <Link href="/contact">
+                <Link href={`/${lang}/contact`}>
                   {message("hero_cta")}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className={`ml-2 h-5 w-5 transition-transform ${isRtl ? 'rotate-180 mr-2 ml-0' : ''}`} />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/services">{message("hero_learnMore")}</Link>
+                <Link href={`/${lang}/services`}>{message("hero_learnMore")}</Link>
               </Button>
             </motion.div>
           </motion.div>
 
           {/* Hero Image */}
           <motion.div
-            initial={{ opacity: 0, x: dir === "rtl" ? -50 : 50 }}
+            initial={{ opacity: 0, x: isRtl ? -50 : 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             className="relative"
           >
             <motion.div
               animate={{ y: [0, -20, 0] }}
-              transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="relative rounded-3xl overflow-hidden shadow-2xl"
             >
               <img
-                src="/clear-dental-aligners-invisible-braces.jpg"
+                src="/hero-section.jpg"
                 alt="Clear dental aligners"
                 className="w-full h-auto object-cover"
               />
@@ -120,15 +111,13 @@ export function HeroSection() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1, duration: 0.6 }}
-              className="absolute -bottom-6 -left-6 bg-card border border-border rounded-2xl p-6 shadow-xl"
+              className={`absolute -bottom-6 ${isRtl ? '-right-6' : '-left-6'} bg-card border border-border rounded-2xl p-6 shadow-xl`}
             >
-              <div className="flex items-center gap-4">
+              <div className={`flex items-center gap-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
                 <div className="text-4xl font-bold text-primary">23+</div>
                 <div className="text-sm text-muted-foreground">
                   <div>{message("experience_years_of")}</div>
-                  <div className="font-semibold text-foreground">
-                    {message("experience_label")}
-                  </div>
+                  <div className="font-semibold text-foreground">{message("experience_label")}</div>
                 </div>
               </div>
             </motion.div>
@@ -138,3 +127,5 @@ export function HeroSection() {
     </section>
   )
 }
+
+export default HeroSection

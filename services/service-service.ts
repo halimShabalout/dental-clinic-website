@@ -1,5 +1,3 @@
-// Service layer for services data - simulates API calls
-
 import { servicesData } from "@/mock-data/services"
 import type { Service } from "@/types"
 

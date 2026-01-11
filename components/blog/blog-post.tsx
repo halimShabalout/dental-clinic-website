@@ -11,16 +11,17 @@ import { useLocale } from "@/lib/locale-context"
 
 interface BlogPostProps {
   post: BlogPostType
+  lang: "en" | "ar"
 }
 
-export function BlogPost({ post }: BlogPostProps) {
-  const { locale, message } = useLocale()
-
-  const translated = post.translated?.[locale]
+export function BlogPost({ post, lang }: BlogPostProps) {
+  const { message } = useLocale()
+  const dir = lang === "ar" ? "rtl" : "ltr" 
+  const translated = post.translated?.[lang]
   if (!translated) return null
 
   return (
-    <>
+    <div dir={dir}>
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background">
         <div className="container mx-auto px-4">
@@ -32,8 +33,8 @@ export function BlogPost({ post }: BlogPostProps) {
               className="mb-6"
             >
               <Button variant="ghost" asChild>
-                <Link href="/blog">
-                  {locale === "ar" ? (
+                <Link href={`/${lang}/blog`} className="flex items-center">
+                  {dir === "rtl" ? (
                     <ArrowLeft className="ml-2 h-4 w-4" />
                   ) : (
                     <ArrowLeft className="mr-2 h-4 w-4" />
@@ -67,7 +68,7 @@ export function BlogPost({ post }: BlogPostProps) {
                   <Calendar className="h-4 w-4" />
                   <span>
                     {new Date(post.publishedAt).toLocaleDateString(
-                      locale === "ar" ? "ar-EG" : "en-US",
+                      lang === "ar" ? "ar-EG" : "en-US",
                       { dateStyle: "long" }
                     )}
                   </span>
@@ -164,7 +165,7 @@ export function BlogPost({ post }: BlogPostProps) {
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="max-w-3xl mx-auto text-center space-y-6"
@@ -179,13 +180,13 @@ export function BlogPost({ post }: BlogPostProps) {
 
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" asChild>
-                <Link href="/contact">
+                <Link href={`/${lang}/contact`}>
                   {message("blog_cta_book")}
                 </Link>
               </Button>
 
               <Button size="lg" variant="outline" asChild>
-                <Link href="/blog">
+                <Link href={`/${lang}/blog`}>
                   {message("blog_cta_read_more")}
                 </Link>
               </Button>
@@ -193,6 +194,6 @@ export function BlogPost({ post }: BlogPostProps) {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

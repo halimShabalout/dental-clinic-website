@@ -6,11 +6,15 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/locale-context";
 
-export function CTASection() {
+interface CTASectionProps {
+  lang: "en" | "ar";
+}
+
+const CTASection = ({ lang }: CTASectionProps) => {
   const { message, dir } = useLocale();
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-20 relative overflow-hidden" dir={dir}>
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-accent" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
@@ -37,12 +41,12 @@ export function CTASection() {
 
           <div className="flex flex-wrap justify-center gap-4 pt-4">
             <Button size="lg" variant="secondary" asChild className="group">
-              <Link href="/contact">
+              <Link href={`/${lang}/contact`}>
                 {message("nav_bookConsultation")}
                 <ArrowRight
                   className={`h-5 w-5 transition-transform ${
                     dir === "rtl"
-                      ? "mr-2 group-hover:-translate-x-1"
+                      ? "mr-2 group-hover:-translate-x-1 rotate-180"
                       : "ml-2 group-hover:translate-x-1"
                   }`}
                 />
@@ -55,7 +59,7 @@ export function CTASection() {
               asChild
               className="bg-white/10 border-white/20 text-white hover:bg-white/20"
             >
-              <Link href="/services">
+              <Link href={`/${lang}/services`}>
                 {message("cta_explore_services")}
               </Link>
             </Button>
@@ -65,3 +69,4 @@ export function CTASection() {
     </section>
   );
 }
+export default CTASection

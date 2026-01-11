@@ -14,38 +14,31 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { useBlogPosts } from "@/hooks/use-blog"
 import { useLocale } from "@/lib/locale-context"
+import type { BlogPost } from "@/types"
 
-export function BlogGrid() {
-  const { posts, loading } = useBlogPosts()
-  const { locale, message } = useLocale()
+interface BlogGridProps {
+  lang: "en" | "ar"
+  posts: BlogPost[]
+}
+
+export function BlogGrid({ lang, posts }: BlogGridProps) {
+  const { dir, message } = useLocale()
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-
   const translatedCategories = Array.from(
     new Set(
       posts
-        .map((post) => post.translated?.[locale]?.category)
+        .map((post) => post.translated?.[lang]?.category)
         .filter((c): c is string => Boolean(c))
     )
   )
 
   const filteredPosts = selectedCategory
-    ? posts.filter(
-      (post) => post.translated?.[locale]?.category === selectedCategory
-    )
+    ? posts.filter((post) => post.translated?.[lang]?.category === selectedCategory)
     : posts
 
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="text-center">{message("blog_loading")}</div>
-      </div>
-    )
-  }
-
   return (
-    <>
+    <div dir={dir}>
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background">
         <div className="container mx-auto px-4">
@@ -96,19 +89,18 @@ export function BlogGrid() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {filteredPosts.map((post, index) => {
-              const translated = post.translated?.[locale]
+              const translated = post.translated?.[lang]
               if (!translated) return null
-
               return (
                 <motion.div
                   key={post.id}
                   initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
                   <Card className="h-full flex flex-col hover:shadow-2xl transition-all duration-300 group">
-                    <Link href={`/blog/${post.slug}`}>
+                    <Link href={`/${lang}/blog/${post.slug}`}>
                       <div className="relative overflow-hidden rounded-t-xl">
                         <img
                           src={post.imageUrl || "/placeholder.svg"}
@@ -128,7 +120,7 @@ export function BlogGrid() {
                           <Calendar className="h-3 w-3" />
                           <span>
                             {new Date(post.publishedAt).toLocaleDateString(
-                              locale === "ar" ? "ar-EG" : "en-US",
+                              lang === "ar" ? "ar-EG" : "en-US",
                               { dateStyle: "long" }
                             )}
                           </span>
@@ -143,7 +135,7 @@ export function BlogGrid() {
 
                       <CardTitle className="text-xl">
                         <Link
-                          href={`/blog/${post.slug}`}
+                          href={`/${lang}/blog/${post.slug}`}
                           className="hover:text-primary transition-colors"
                         >
                           {translated.title}
@@ -172,9 +164,12 @@ export function BlogGrid() {
                         asChild
                         className="w-full group/btn"
                       >
-                        <Link href={`/blog/${post.slug}`}>
+                        <Link href={`/${lang}/blog/${post.slug}`} className="flex items-center justify-center">
                           {message("blog_read_article")}
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                          <ArrowRight
+                            className={`ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1 ${dir === "rtl" ? "rotate-180 ml-0 mr-2" : ""
+                              }`}
+                          />
                         </Link>
                       </Button>
                     </CardFooter>
@@ -185,6 +180,6 @@ export function BlogGrid() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

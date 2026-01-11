@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Smile } from "lucide-react";
+import { Menu, X, Smile, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { LanguageSwitcher } from "@/components/language-switcher";
 import { useLocale } from "@/lib/locale-context";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +13,7 @@ export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const { message, dir } = useLocale();
+  const { message, dir, locale, toggleLocale } = useLocale();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,9 +44,14 @@ export function SiteHeader() {
       )}
     >
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div
+          className={cn(
+            "flex h-16 items-center justify-between",
+            dir === "rtl" ? "flex-row" : "flex-row-reverse"
+          )}
+        >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href={`/${locale}`} className="flex items-center gap-2 group">
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
@@ -56,7 +60,7 @@ export function SiteHeader() {
               <Smile className="h-6 w-6" />
             </motion.div>
 
-            <div className={cn("flex flex-col", dir === "rtl" && "items-end")}>
+            <div className={cn("flex flex-col", dir === "rtl" ? "items-end" : "items-start")}>
               <span className="font-bold text-lg leading-none">
                 {message("header_doctor_name")}
               </span>
@@ -67,23 +71,36 @@ export function SiteHeader() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav
+            className={cn(
+              "hidden md:flex items-center gap-1",
+              dir === "rtl" ? "flex-row" : "flex-row-reverse"
+            )}
+          >
             {navItems.map((item) => (
               <Button key={item.href} variant="ghost" asChild>
-                <Link href={item.href}>{item.label}</Link>
+                <Link href={`/${locale}${item.href}`}>{item.label}</Link>
               </Button>
             ))}
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
+          <div className={cn("flex items-center gap-2", dir === "rtl" ? "flex-row" : "flex-row-reverse")}>
             <div className="hidden md:flex items-center gap-2">
               <ThemeSwitcher />
-              <LanguageSwitcher />
+
+              {/* Language toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleLocale}
+                aria-label="Toggle language"
+              >
+                <Globe className="h-5 w-5" />
+              </Button>
+
               <Button asChild className="ml-2">
-                <Link href="/contact">
-                  {message("nav_bookConsultation")}
-                </Link>
+                <Link href={`/${locale}/contact`}>{message("nav_bookConsultation")}</Link>
               </Button>
             </div>
 
@@ -94,15 +111,12 @@ export function SiteHeader() {
               className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
       </div>
+
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -122,18 +136,26 @@ export function SiteHeader() {
                   className="justify-start"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link href={`/${locale}${item.href}`}>
+                    {item.label}
+                  </Link>
                 </Button>
               ))}
 
               <div className="flex items-center gap-2 pt-2 border-t border-border">
                 <ThemeSwitcher />
-                <LanguageSwitcher />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleLocale}
+                >
+                  <Globe className="h-5 w-5" />
+                </Button>
               </div>
 
               <Button asChild className="mt-2">
                 <Link
-                  href="/contact"
+                  href={`/${locale}/contact`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {message("nav_bookConsultation")}

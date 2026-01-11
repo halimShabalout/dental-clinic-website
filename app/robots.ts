@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://draymanzain.com/sitemap.xml",
+    sitemap: "https://makkahOrthodontist.com/sitemap.xml",
   }
 }
