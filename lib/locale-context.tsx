@@ -1,117 +1,69 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import messagesData from "@/locales/message-keys.json";
+import { usePathname, useRouter } from "next/navigation";
 
 type Locale = "en" | "ar";
 type Messages = Record<string, string>;
 
-type LocaleContextType = {
+interface LocaleContextType {
   locale: Locale;
-  setLocale: (locale: Locale) => void;
-  message: (key: string) => string;
-  isHydrated: boolean;
-  dir: "ltr" | "rtl";
   toggleLocale: () => void;
-};
+  dir: "ltr" | "rtl";
+  message: (key: string, fallback?: string) => string;
+}
 
-const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
+const LocaleContext = createContext<LocaleContextType | null>(null);
 
-const LANGUAGES: Locale[] = ["en", "ar"];
 const RTL_LANGS: Locale[] = ["ar"];
-const DEFAULT_LOCALE: Locale = "ar";
 
 export function LocaleProvider({
   children,
-  userLang,
+  userLang = "ar",
 }: {
   children: React.ReactNode;
-  userLang?: string;
+  userLang: Locale;
 }) {
-  const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    let initial: Locale = DEFAULT_LOCALE;
-
-    if (userLang && LANGUAGES.includes(userLang as Locale)) {
-      initial = userLang as Locale;
-    } else {
-      const stored = localStorage.getItem("locale");
-      if (stored && LANGUAGES.includes(stored as Locale)) {
-        initial = stored as Locale;
-      }
-    }
-
-    const pathLang = window.location.pathname.split("/")[1];
-    if (LANGUAGES.includes(pathLang as Locale)) {
-      initial = pathLang as Locale;
-    }
-
-    setLocale(initial);
-    setIsHydrated(true);
-  }, [userLang]);
-
-  useEffect(() => {
-    if (!isHydrated) return;
-
-    localStorage.setItem("locale", locale);
-    document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`;
-    document.documentElement.lang = locale;
-    document.documentElement.dir = RTL_LANGS.includes(locale) ? "rtl" : "ltr";
-
-    const segments = window.location.pathname.split("/");
-    if (!LANGUAGES.includes(segments[1] as Locale)) {
-      segments.splice(1, 0, locale);
-      window.history.replaceState(null, "", segments.join("/"));
-    }
-  }, [locale, isHydrated]);
+  const [locale] = useState<Locale>(userLang);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const toggleLocale = () => {
     const newLocale: Locale = locale === "en" ? "ar" : "en";
-    setLocale(newLocale);
-
-    const segments = window.location.pathname.split("/");
-    if (LANGUAGES.includes(segments[1] as Locale)) {
-      segments[1] = newLocale;
-    } else {
-      segments.splice(1, 0, newLocale);
-    }
-    window.location.href = segments.join("/");
+    const segments = pathname.split("/");
+    segments[1] = newLocale;
+    router.push(segments.join("/"));
   };
 
-  const messages: Messages = useMemo(() => {
-    return messagesData.data[locale] ?? {};
-  }, [locale]);
+  const messages: Messages = useMemo(
+    () => messagesData.data[locale] ?? {},
+    [locale]
+  );
 
-  const message = (key: string) => messages[key] ?? key;
+  const message = (key: string, fallback?: string) =>
+    messages[key] ?? fallback ?? key;
+
+  const dir: "ltr" | "rtl" = RTL_LANGS.includes(locale) ? "rtl" : "ltr";
 
   return (
     <LocaleContext.Provider
       value={{
         locale,
-        setLocale,
-        message,
-        isHydrated,
-        dir: RTL_LANGS.includes(locale) ? "rtl" : "ltr",
         toggleLocale,
+        dir,
+        message,
       }}
     >
-      {isHydrated ? children : null}
+      {children}
     </LocaleContext.Provider>
   );
 }
 
 export function useLocale() {
-  const context = useContext(LocaleContext);
-  if (!context) {
-    throw new Error("useLocale must be used inside LocaleProvider");
+  const ctx = useContext(LocaleContext);
+  if (!ctx) {
+    throw new Error("useLocale must be used within LocaleProvider");
   }
-  return context;
+  return ctx;
 }

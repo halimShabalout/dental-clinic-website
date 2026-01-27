@@ -1,16 +1,33 @@
 "use client"
 
 import Link from "next/link"
-import { Smile, Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react"
+import { Smile, Phone, Mail, MapPin } from "lucide-react"
 import { useLocale } from "@/lib/locale-context"
 import { cn } from "@/lib/utils"
+import {
+  SiSnapchat,
+  SiTiktok,
+  SiLinphone,
+  SiGmail,
+  SiInstagram,
+  SiX,
+  SiYoutube,
+  SiWhatsapp,
+} from 'react-icons/si'
 
 export function SiteFooter() {
-  const { message, dir } = useLocale()
+  const { message, dir, locale } = useLocale()
   const currentYear = new Date().getFullYear()
 
+  const navLinks = [
+    { key: "nav_about", href: "/about" },
+    { key: "nav_services", href: "/services" },
+    { key: "nav_blog", href: "/blog" },
+    { key: "nav_contact", href: "/contact" },
+  ]
+
   return (
-    <footer className="bg-secondary/30 border-t border-border">
+    <footer className="bg-secondary/30 border-t border-border" dir={dir}>
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -32,21 +49,18 @@ export function SiteFooter() {
           </div>
 
           {/* Quick Links */}
-          <div className={cn("space-y-4", dir === "rtl" && "text-right")}>
+          <div className={cn("space-y-4")}>
             <h3 className="font-semibold">{message("footer_quickLinks")}</h3>
             <nav className="flex flex-col gap-2">
-              <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {message("nav_about")}
-              </Link>
-              <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {message("nav_services")}
-              </Link>
-              <Link href="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {message("nav_blog")}
-              </Link>
-              <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                {message("nav_contact")}
-              </Link>
+              {navLinks.map(link => (
+                <Link
+                  key={link.key}
+                  href={`/${locale}${link.href}`}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  {message(link.key)}
+                </Link>
+              ))}
             </nav>
           </div>
 
@@ -55,11 +69,11 @@ export function SiteFooter() {
             <h3 className="font-semibold">{message("footer_contact")}</h3>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4 text-primary" />
+                <SiLinphone className="h-4 w-4 text-primary" />
                 <span dir="ltr">{message("footer_phone")}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Mail className="h-4 w-4 text-primary" />
+                <SiGmail className="h-5 w-5" />
                 <span dir="ltr">{message("footer_email")}</span>
               </div>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -74,28 +88,28 @@ export function SiteFooter() {
             <h3 className="font-semibold">{message("footer_followUs")}</h3>
             <div className="flex gap-3">
               <a
-                href="https://facebook.com"
+                href="https://www.snapchat.com/@drayma3"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
               >
-                <Facebook className="h-5 w-5" />
+                <SiSnapchat className="h-5 w-5" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/d.ymnzy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
               >
-                <Instagram className="h-5 w-5" />
+                <SiInstagram className="h-5 w-5" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://www.tiktok.com/@drayman75?lang=en"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
               >
-                <Twitter className="h-5 w-5" />
+                <SiTiktok className="h-5 w-5" />
               </a>
             </div>
           </div>

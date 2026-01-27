@@ -17,14 +17,14 @@ function AnimatedCounter({ end, duration = 2 }: { end: number; duration?: number
     if (isInView && !isVisible) {
       setIsVisible(true)
       let startTime: number | null = null
+
       const animate = (currentTime: number) => {
         if (!startTime) startTime = currentTime
         const progress = Math.min((currentTime - startTime) / (duration * 1000), 1)
         setCount(Math.floor(progress * end))
-        if (progress < 1) {
-          requestAnimationFrame(animate)
-        }
+        if (progress < 1) requestAnimationFrame(animate)
       }
+
       requestAnimationFrame(animate)
     }
   }, [isInView, end, duration, isVisible])
@@ -32,7 +32,11 @@ function AnimatedCounter({ end, duration = 2 }: { end: number; duration?: number
   return <span ref={ref}>{count.toLocaleString()}</span>
 }
 
-export function StatsSection() {
+interface StatsSectionProps {
+  lang: "en" | "ar"
+}
+
+const StatsSection = ({ lang }: StatsSectionProps) => {
   const { message, dir } = useLocale()
 
   const stats = [
@@ -63,7 +67,7 @@ export function StatsSection() {
   ]
 
   return (
-    <section className="py-20 bg-secondary/20">
+    <section className="py-20 bg-secondary/20" dir={dir}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
@@ -78,11 +82,15 @@ export function StatsSection() {
               <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 text-primary">
                 <stat.icon className="h-8 w-8" />
               </div>
+
               <div className="text-4xl md:text-5xl font-bold text-primary">
                 <AnimatedCounter end={stat.value} />
                 {stat.suffix}
               </div>
-              <p className="text-sm md:text-base text-muted-foreground font-medium">{stat.label}</p>
+
+              <p className="text-sm md:text-base text-muted-foreground font-medium">
+                {stat.label}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -90,3 +98,5 @@ export function StatsSection() {
     </section>
   )
 }
+
+export default StatsSection

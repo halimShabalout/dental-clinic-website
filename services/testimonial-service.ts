@@ -1,5 +1,3 @@
-// Service layer for testimonials data - simulates API calls
-
 import { testimonialsData } from "@/mock-data/testimonials"
 import type { Testimonial } from "@/types"
 

@@ -5,8 +5,13 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useLocale } from "@/lib/locale-context"
 
-export function ContactInfo() {
+interface CTASectionProps {
+  lang: "en" | "ar"
+}
+
+const ContactInfo = ({ lang }: CTASectionProps) => {
   const { message } = useLocale()
+  const dir = lang === "ar" ? "rtl" : "ltr"
 
   const contactDetails = [
     {
@@ -27,12 +32,15 @@ export function ContactInfo() {
     {
       icon: Clock,
       title: message("contact_hours"),
-      details: [message("contact_hours_details_open"),message("contact_hours_details_close")],
+      details: [
+        message("contact_hours_details_open"),
+        message("contact_hours_details_close"),
+      ],
     },
   ]
 
   return (
-    <>
+    <div dir={dir}>
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background">
         <div className="container mx-auto px-4">
@@ -57,9 +65,7 @@ export function ContactInfo() {
               transition={{ duration: 0.6 }}
               className="space-y-4"
             >
-              <h2 className="text-3xl font-bold">
-                {message("contact_info_title")}
-              </h2>
+              <h2 className="text-3xl font-bold">{message("contact_info_title")}</h2>
               <p className="text-lg text-muted-foreground">
                 {message("contact_info_description")}
               </p>
@@ -115,6 +121,8 @@ export function ContactInfo() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
+
+export default ContactInfo

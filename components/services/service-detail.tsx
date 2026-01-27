@@ -11,14 +11,15 @@ import { useLocale } from "@/lib/locale-context";
 
 interface ServiceDetailProps {
   service: Service;
+  lang: "en" | "ar";
 }
 
-export function ServiceDetail({ service }: ServiceDetailProps) {
-  const { message, dir, locale } = useLocale();
-  const t = service.translated[locale];
+const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
+  const { dir, message } = useLocale();
+  const t = service.translated[lang]; 
 
   return (
-    <>
+    <div dir={dir}>
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background">
         <div className="container mx-auto px-4">
@@ -30,7 +31,7 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
               className="mb-6"
             >
               <Button variant="ghost" asChild>
-                <Link href="/services" className="flex items-center">
+                <Link href={`/${lang}/services`} className="flex items-center">
                   {dir === "rtl" ? (
                     <ArrowRight className="ml-2 h-4 w-4" />
                   ) : (
@@ -97,15 +98,13 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
             {/* About */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">
-                    {message("service_about_title")}
-                  </CardTitle>
+                  <CardTitle className="text-2xl">{message("service_about_title")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-lg text-muted-foreground leading-relaxed">
@@ -118,15 +117,13 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
             {/* Benefits */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">
-                    {message("service_benefits_title")}
-                  </CardTitle>
+                  <CardTitle className="text-2xl">{message("service_benefits_title")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="grid md:grid-cols-2 gap-4">
@@ -142,9 +139,7 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 flex-shrink-0 mt-0.5">
                           <Check className="h-4 w-4 text-primary" />
                         </div>
-                        <span className="text-muted-foreground leading-relaxed">
-                          {benefit}
-                        </span>
+                        <span className="text-muted-foreground leading-relaxed">{benefit}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -160,7 +155,7 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="max-w-3xl mx-auto text-center space-y-6"
@@ -175,21 +170,20 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
 
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" asChild className="group">
-                <Link href="/contact">
+                <Link href={`/${lang}/contact`}>
                   {message("service_book_consultation")}
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
 
               <Button size="lg" variant="outline" asChild>
-                <Link href="/services">
-                  {message("service_view_all")}
-                </Link>
+                <Link href={`/${lang}/services`}>{message("service_view_all")}</Link>
               </Button>
             </div>
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
+export default ServiceDetail

@@ -3,7 +3,11 @@ import type { BlogPost } from "@/types"
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   await new Promise((resolve) => setTimeout(resolve, 100))
-  return blogPostsData.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+
+  return [...blogPostsData].sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  )
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -11,12 +15,3 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   return blogPostsData.find((post) => post.slug === slug) || null
 }
 
-export async function getBlogPostsByCategory(category: string): Promise<BlogPost[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return blogPostsData.filter((post) => post.category === category)
-}
-
-export async function getCategories(): Promise<string[]> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  return Array.from(new Set(blogPostsData.map((post) => post.category)))
-}

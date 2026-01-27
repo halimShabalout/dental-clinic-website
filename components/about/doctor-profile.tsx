@@ -1,37 +1,25 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { GraduationCap, Briefcase, Heart, Award } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useDoctor } from "@/hooks/use-doctor"
-import { useLocale } from "@/lib/locale-context"
+import { motion } from "framer-motion";
+import { GraduationCap, Briefcase, Heart, Award } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLocale } from "@/lib/locale-context";
+import type { Doctor } from "@/types";
 
-export function DoctorProfile() {
-  const { doctor, loading } = useDoctor()
-  const { locale, message } = useLocale()
+interface DoctorProfileProps {
+  doctor: Doctor;
+  lang: "en" | "ar";
+  dir: "ltr" | "rtl";
+}
 
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="text-center">{message("loading")}</div>
-      </div>
-    )
-  }
-
-  if (!doctor) {
-    return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="text-center">{message("doctor_not_found")}</div>
-      </div>
-    )
-  }
-
-  const t = doctor.translated[locale]
+export function DoctorProfile({ doctor, lang, dir }: DoctorProfileProps) {
+  const { message } = useLocale();
+  const t = doctor.translated[lang];
 
   return (
     <>
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background">
+      <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background" dir={dir}>
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             {/* Image */}
@@ -42,11 +30,7 @@ export function DoctorProfile() {
               className="relative"
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src={doctor.imageUrl || "/placeholder.svg"}
-                  alt={t.name}
-                  className="w-full h-auto object-cover"
-                />
+                <img src={doctor.imageUrl || "/placeholder.svg"} alt={t.name} className="w-full h-auto object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
               </div>
               {/* Floating badges */}
@@ -80,7 +64,7 @@ export function DoctorProfile() {
       </section>
 
       {/* Philosophy Section */}
-      <section className="py-20">
+      <section className="py-20" dir={dir}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -107,16 +91,11 @@ export function DoctorProfile() {
       </section>
 
       {/* Education & Experience */}
-      <section className="py-20 bg-secondary/20">
+      <section className="py-20 bg-secondary/20" dir={dir}>
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* Education */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <Card className="h-full">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
@@ -128,15 +107,8 @@ export function DoctorProfile() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-4">
-                    {t.education.map((edu, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1, duration: 0.4 }}
-                        className="flex gap-3 items-start"
-                      >
+                    {t.education.map((edu, i) => (
+                      <motion.li key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.4 }} className="flex gap-3 items-start">
                         <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
                         <p className="text-muted-foreground leading-relaxed">{edu}</p>
                       </motion.li>
@@ -147,12 +119,7 @@ export function DoctorProfile() {
             </motion.div>
 
             {/* Experience */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.6 }}>
               <Card className="h-full">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
@@ -164,15 +131,8 @@ export function DoctorProfile() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-4">
-                    {t.experience.map((exp, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1, duration: 0.4 }}
-                        className="flex gap-3 items-start"
-                      >
+                    {t.experience.map((exp, i) => (
+                      <motion.li key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.4 }} className="flex gap-3 items-start">
                         <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
                         <p className="text-muted-foreground leading-relaxed">{exp}</p>
                       </motion.li>
@@ -185,5 +145,5 @@ export function DoctorProfile() {
         </div>
       </section>
     </>
-  )
+  );
 }

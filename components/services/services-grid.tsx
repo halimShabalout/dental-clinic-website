@@ -13,25 +13,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useServices } from "@/hooks/use-services";
 import { useLocale } from "@/lib/locale-context";
+import type { Service } from "@/types";
 
-export function ServicesGrid() {
-  const { services, loading } = useServices();
-  const { message, dir, locale } = useLocale();
+interface ServicesGridProps {
+  lang: "en" | "ar";
+  services: Service[];
+}
 
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="text-center">
-          {message("services_loading")}
-        </div>
-      </div>
-    );
-  }
-
+const ServicesGrid = ({ lang, services }: ServicesGridProps) => {
+  const { message, dir } = useLocale();
   return (
-    <>
+    <div dir={dir}>
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background">
         <div className="container mx-auto px-4">
@@ -56,13 +49,12 @@ export function ServicesGrid() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {services.map((service, index) => {
-              const t = service.translated[locale];
-
+              const translated= service.translated[lang];
               return (
                 <motion.div
                   key={service.id}
                   initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
@@ -70,7 +62,7 @@ export function ServicesGrid() {
                     <div className="relative overflow-hidden rounded-t-xl">
                       <img
                         src={service.imageUrl || "/placeholder.svg"}
-                        alt={t.name}
+                        alt={translated.name}
                         className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
@@ -83,30 +75,21 @@ export function ServicesGrid() {
                     </div>
 
                     <CardHeader>
-                      <CardTitle className="text-xl">
-                        {t.name}
-                      </CardTitle>
-                      <CardDescription className="text-base">
-                        {t.description}
-                      </CardDescription>
+                      <CardTitle className="text-xl">{translated.name}</CardTitle>
+                      <CardDescription className="text-base">{translated.description}</CardDescription>
                     </CardHeader>
 
                     <CardContent className="flex-1 space-y-4">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="h-4 w-4 text-primary" />
-                        <span>{t.duration}</span>
+                        <span>{translated.duration}</span>
                       </div>
 
                       <ul className="space-y-2">
-                        {t.benefits.slice(0, 4).map((benefit, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start gap-2 text-sm"
-                          >
+                        {translated.benefits.slice(0, 4).map((benefit, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm">
                             <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span className="text-muted-foreground">
-                              {benefit}
-                            </span>
+                            <span className="text-muted-foreground">{benefit}</span>
                           </li>
                         ))}
                       </ul>
@@ -114,14 +97,11 @@ export function ServicesGrid() {
 
                     <CardFooter>
                       <Button asChild className="w-full group/btn">
-                        <Link href={`/services/${service.slug}`}>
+                        <Link href={`/${lang}/services/${service.slug}`}>
                           {message("services_learn_more")}
                           <ArrowRight
-                            className={`ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1 ${
-                              dir === "rtl"
-                                ? "rotate-180 ml-0 mr-2"
-                                : ""
-                            }`}
+                            className={`h-4 w-4 transition-transform group-hover/btn:translate-x-1 ${dir === "rtl" ? "rotate-180 ml-0 mr-2" : "ml-2"
+                              }`}
                           />
                         </Link>
                       </Button>
@@ -133,6 +113,8 @@ export function ServicesGrid() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
-}
+};
+
+export default ServicesGrid;

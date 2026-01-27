@@ -4,14 +4,19 @@ import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { testimonialsData } from "@/mock-data/testimonials";
+import { Testimonial } from "@/types/index";
 import { useLocale } from "@/lib/locale-context";
 
-export function TestimonialsSection() {
-  const { message, locale } = useLocale(); 
+interface TestimonialsSectionProps {
+  testimonialsData: Testimonial[];
+  lang: "en" | "ar";
+}
+
+const TestimonialsSection = ({ testimonialsData, lang }: TestimonialsSectionProps) => {
+  const { message, dir} = useLocale();
 
   return (
-    <section className="py-20">
+    <section className="py-20" dir={dir}>
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div
@@ -32,13 +37,17 @@ export function TestimonialsSection() {
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonialsData.map((testimonial, index) => {
-            const t = testimonial.translated?.[locale] || testimonial;
+            const t = testimonial.translated?.[lang] ?? testimonial;
 
             return (
               <motion.div
                 key={testimonial.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{
+                  opacity: 0,
+                  y: 30,
+                  x: dir === "rtl" ? 30 : -30,
+                }}
+                whileInView={{ opacity: 1, y: 0, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
@@ -73,9 +82,12 @@ export function TestimonialsSection() {
                           {t.patientName.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
+
                       <div>
                         <p className="font-semibold">{t.patientName}</p>
-                        <p className="text-xs text-muted-foreground">{t.treatment}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {t.treatment}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
@@ -87,4 +99,6 @@ export function TestimonialsSection() {
       </div>
     </section>
   );
-}
+};
+
+export default TestimonialsSection;
