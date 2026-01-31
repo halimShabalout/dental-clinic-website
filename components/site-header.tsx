@@ -51,16 +51,24 @@ export function SiteHeader() {
           )}
         >
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center gap-2 group">
+          <Link href={`/${locale}`}
+            className={cn(
+              "flex items-center gap-2 group",
+              dir === "ltr" ? "flex-row-reverse" : "flex-row"
+            )}
+
+          >
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
-              className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground"
+              className="flex items-center justify-center w-10 h-10 rounded-xl text-primary-foreground"
             >
-              <Smile className="h-6 w-6" />
+              <img
+                src="/header.png"
+              />
             </motion.div>
 
-            <div className={cn("flex flex-col", dir === "rtl" ? "items-end" : "items-start")}>
+            <div className={cn("flex flex-col", dir === "ltr" ? "items-end" : "items-start")}>
               <span className="font-bold text-lg leading-none">
                 {message("header_doctor_name")}
               </span>
@@ -86,7 +94,10 @@ export function SiteHeader() {
 
           {/* Actions */}
           <div className={cn("flex items-center gap-2", dir === "rtl" ? "flex-row" : "flex-row-reverse")}>
-            <div className="hidden md:flex items-center gap-2">
+            <div className={cn(
+              "hidden md:flex items-center gap-2",
+              dir === "rtl" ? "flex-row" : "flex-row-reverse"
+            )}>
               <ThemeSwitcher />
 
               {/* Language toggle */}

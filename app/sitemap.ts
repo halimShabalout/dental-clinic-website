@@ -3,7 +3,7 @@ import { getAllBlogPosts } from "@/services/blog-service"
 import { getAllServices } from "@/services/service-service"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://makkahOrthodontist.com"
+  const baseUrl = "https://makkahorthodontist.com"
 
   // Static pages
   const staticPages = [

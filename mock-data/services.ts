@@ -86,7 +86,7 @@ export const servicesData: Service[] = [
   {
     id: "3",
     slug: "orthodontic-consultation",
-    imageUrl: "/dentist-consultation-modern-clinic.jpg",
+    imageUrl: "/service-3.png",
     featured: false,
 
     translated: {

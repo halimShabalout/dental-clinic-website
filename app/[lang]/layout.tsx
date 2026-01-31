@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { LocaleProvider } from "@/lib/locale-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import FloatingActionButtons from '@/components/floating-action-buttons'
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,9 +19,8 @@ export async function generateMetadata({
   if (lang === "ar") {
     return {
       title: {
-        default:
-          "تقويم شفاف في مكة | د. أيمن زين | Orthodontist & Clear Aligners",
-        template: "%s | تقويم شفاف مكة – د. أيمن زين",
+        default: "أشهر أطباء تقويم الأسنان في مكة - الدكتور أيمن زين",
+        template: "%s | أشهر أطباء تقويم الأسنان في مكة – الدكتور أيمن زين",
       },
       description:
         "د. أيمن زين، أخصائي تقويم الأسنان في مكة المكرمة. خبرة أكثر من 23 سنة في التقويم الشفاف وتصحيح الابتسامة بأحدث التقنيات الطبية.",
@@ -32,7 +32,7 @@ export async function generateMetadata({
         },
       },
       openGraph: {
-        title: "تقويم شفاف في مكة | د. أيمن زين",
+        title: "أشهر أطباء تقويم الأسنان في مكة - الدكتور أيمن زين",
         description:
           "أخصائي تقويم أسنان في مكة المكرمة متخصص في التقويم الشفاف وتصحيح الابتسامة بأحدث التقنيات.",
         locale: "ar_SA",
@@ -43,9 +43,8 @@ export async function generateMetadata({
 
   return {
     title: {
-      default:
-        "Clear Aligners in Mecca | Dr. Ayman Zain | Orthodontist",
-      template: "%s | Clear Aligners Mecca – Dr. Ayman Zain",
+      default: "Top Orthodontist in Mecca – Dr. Ayman Zain",
+      template: "%s | Top Orthodontist in Mecca – Dr. Ayman Zain",
     },
     description:
       "Dr. Ayman Zain, orthodontist in Mecca with over 23 years of experience in clear aligners and modern orthodontic treatments.",
@@ -57,7 +56,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: "Clear Aligners in Mecca | Dr. Ayman Zain",
+      title: "Top Orthodontist in Mecca – Dr. Ayman Zain",
       description:
         "Orthodontist in Mecca specializing in clear aligners and smile correction using the latest techniques.",
       locale: "en_US",
@@ -79,6 +78,7 @@ export default async function LangLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <FloatingActionButtons />
       </div>
     </LocaleProvider>
   );

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://makkahOrthodontist.com/sitemap.xml",
+    sitemap: "https://makkahorthodontist.com/sitemap.xml",
   }
 }

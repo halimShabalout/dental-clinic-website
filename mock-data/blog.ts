@@ -4,8 +4,8 @@ export const blogPostsData: BlogPost[] = [
   {
     id: "1",
     slug: "clear-aligners-vs-traditional-braces",
-    publishedAt: "2024-12-01",
-    updatedAt: "2024-12-01",
+    publishedAt: "2025-12-01",
+    updatedAt: "2025-12-01",
     imageUrl: "/dental-braces-vs-clear-aligners-comparison.jpg",
     readTime: 5,
     translated: {
@@ -34,8 +34,8 @@ export const blogPostsData: BlogPost[] = [
   {
     id: "2",
     slug: "how-clear-aligners-work",
-    publishedAt: "2024-11-15",
-    updatedAt: "2024-11-15",
+    publishedAt: "2025-11-15",
+    updatedAt: "2025-11-15",
     imageUrl: "/clear-aligner-technology-3d-imaging.jpg",
     readTime: 7,
     translated: {
@@ -64,8 +64,8 @@ export const blogPostsData: BlogPost[] = [
   {
     id: "3",
     slug: "adult-orthodontics-never-too-late",
-    publishedAt: "2024-10-28",
-    updatedAt: "2024-10-28",
+    publishedAt: "2025-10-28",
+    updatedAt: "2025-10-28",
     imageUrl: "/professional-adult-with-confident-smile.jpg",
     readTime: 6,
     translated: {

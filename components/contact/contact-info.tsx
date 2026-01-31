@@ -17,7 +17,7 @@ const ContactInfo = ({ lang }: CTASectionProps) => {
     {
       icon: Phone,
       title: message("contact_phone"),
-      details: [message("footer_phone")],
+      details: [<span dir="ltr">{message("footer_phone")}</span>],
     },
     {
       icon: Mail,
