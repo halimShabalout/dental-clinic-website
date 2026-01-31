@@ -40,6 +40,7 @@ export async function generateMetadata({
       },
     };
   }
+
   return {
     title: {
       default: "Top Orthodontist in Mecca – Dr. Ayman Zain",
@@ -62,22 +63,23 @@ export async function generateMetadata({
       type: "website",
     },
   };
+}
 
-  export default async function LangLayout({
-    children,
-    params,
-  }: LayoutProps) {
-    const { lang: routeLang } = await params;
-    const lang: "ar" | "en" = routeLang === "ar" ? "ar" : "en";
+export default async function LangLayout({
+  children,
+  params,
+}: LayoutProps) {
+  const { lang: routeLang } = await params;
+  const lang: "ar" | "en" = routeLang === "ar" ? "ar" : "en";
 
-    return (
-      <LocaleProvider userLang={lang}>
-        <div className="min-h-screen flex flex-col">
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <FloatingActionButtons />
-        </div>
-      </LocaleProvider>
-    );
-  }
+  return (
+    <LocaleProvider userLang={lang}>
+      <div className="min-h-screen flex flex-col">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
+        <FloatingActionButtons />
+      </div>
+    </LocaleProvider>
+  );
+}
