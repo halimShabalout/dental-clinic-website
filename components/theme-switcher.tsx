@@ -32,9 +32,6 @@ export function ThemeSwitcher() {
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           {message("theme_dark")}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          {message("theme_system")}
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

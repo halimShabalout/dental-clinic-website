@@ -31,14 +31,14 @@ const HeroSection = ({ lang }: HeroSectionProps) => {
         className="absolute bottom-20 left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
       />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-2 py-2 relative z-10">
         <div className={`grid lg:grid-cols-2 gap-12 items-center ${isRtl ? 'text-right' : 'text-left'}`}>
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: isRtl ? 50 : -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-6"
+            className={`space-y-6 ${isRtl ? "lg:order-1" : "lg:order-2"}`}
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -63,7 +63,7 @@ const HeroSection = ({ lang }: HeroSectionProps) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-lg md:text-xl text-muted-foreground text-pretty max-w-xl"
+              className="text-lg md:text-xl text-muted-foreground text-pretty max-w-xl leading-tight text-balance"
             >
               {message("hero_subtitle")}
             </motion.p>
@@ -91,7 +91,7 @@ const HeroSection = ({ lang }: HeroSectionProps) => {
             initial={{ opacity: 0, x: isRtl ? -50 : 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-            className="relative"
+            className={`relative ${isRtl ? "lg:order-2" : "lg:order-1"}`}
           >
             <motion.div
               animate={{ y: [0, -20, 0] }}
@@ -99,7 +99,7 @@ const HeroSection = ({ lang }: HeroSectionProps) => {
               className="relative rounded-3xl overflow-hidden shadow-2xl"
             >
               <img
-                src="/hero-section.jpg"
+                src="/hero-section-2.webp"
                 alt="Clear dental aligners"
                 className="w-full h-auto object-cover"
               />
@@ -111,13 +111,19 @@ const HeroSection = ({ lang }: HeroSectionProps) => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1, duration: 0.6 }}
-              className={`absolute -bottom-6 ${isRtl ? '-right-6' : '-left-6'} bg-card border border-border rounded-2xl p-6 shadow-xl`}
+              className={`absolute -bottom-6 ${isRtl ? '-right-2' : '-left-2'} bg-card border border-border rounded-2xl p-6 shadow-xl`}
             >
-              <div className={`flex items-center gap-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex items-center gap-4 ${isRtl ? "flex-row" : "flex-row-reverse"
+                  }`}
+              >
                 <div className="text-4xl font-bold text-primary">23+</div>
+
                 <div className="text-sm text-muted-foreground">
                   <div>{message("experience_years_of")}</div>
-                  <div className="font-semibold text-foreground">{message("experience_label")}</div>
+                  <div className="font-semibold text-foreground">
+                    {message("experience_label")}
+                  </div>
                 </div>
               </div>
             </motion.div>

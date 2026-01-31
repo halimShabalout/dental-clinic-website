@@ -3,72 +3,72 @@ import type { Testimonial } from "@/types"
 export const testimonialsData: Testimonial[] = [
   {
     id: "1",
-    patientName: "Sarah Ahmed",
+    patientName: "Sarah Alqahtani",
     rating: 5,
     comment:
       "Dr. Ayman transformed my smile in just 10 months with clear aligners. The process was so comfortable and convenient - I could remove them while eating and no one even noticed I was wearing them. Highly recommend!",
     treatment: "Clear Aligners",
     date: "2024-11-15",
-    imageUrl: "/happy-female-patient-smiling.jpg",
+    imageUrl: "/placeholder-user.jpg",
     translated: {
       en: {
-        patientName: "Sarah Ahmed",
+        patientName: "Sarah Alqahtani",
         comment:
           "Dr. Ayman transformed my smile in just 10 months with clear aligners. The process was so comfortable and convenient - I could remove them while eating and no one even noticed I was wearing them. Highly recommend!",
         treatment: "Clear Aligners",
       },
       ar: {
-        patientName: "سارة أحمد",
+        patientName: "سارة القحطاني",
         comment:
-          "قام الدكتور أيمن بتحويل ابتسامتي خلال 10 أشهر فقط باستخدام التقويم الشفاف. كانت العملية مريحة جدًا ويمكنني إزالته أثناء الأكل دون أن يلاحظ أحد، أنصح به بشدة!",
+          "تجربتي مع الدكتور أيمن كانت رائعة. التقويم الشفاف كان مريح جدًا وعملي، وأقدر أشيله وقت الأكل بدون أي إزعاج، وما كان أحد يلاحظ وجوده. النتيجة ممتازة وأنصح فيه بكل ثقة.",
         treatment: "التقويم الشفاف",
       },
     },
   },
   {
     id: "2",
-    patientName: "Mohamed Hassan",
+    patientName: "Halim Shabalout",
     rating: 5,
     comment:
       "I was hesitant about getting braces as an adult, but Dr. Ayman made the entire experience seamless. The clear aligners were perfect for my professional life. Amazing results and exceptional care!",
     treatment: "Clear Aligners",
     date: "2024-10-22",
-    imageUrl: "/professional-male-smiling-portrait.jpg",
+    imageUrl: "/patient-1.jpg",
     translated: {
       en: {
-        patientName: "Mohamed Hassan",
+        patientName: "Halim Shabalout",
         comment:
-          "I was hesitant about getting braces as an adult, but Dr. Ayman made the entire experience seamless. The clear aligners were perfect for my professional life. Amazing results and exceptional care!",
-        treatment: "Clear Aligners",
+          "The treatment experience was excellent from start to finish. Dr. Ayman was highly professional, respectful, and very clear in explaining every step of the process. Appointments were always on time, and the results exceeded my expectations. I highly recommend him with full confidence.",
+        treatment: "Metal Braces",
       },
       ar: {
-        patientName: "محمد حسن",
+        patientName: "حليم شبلوط",
         comment:
-          "كنت مترددًا في تركيب التقويم كبالغ، لكن الدكتور أيمن جعل التجربة سلسة تمامًا. كان التقويم الشفاف مثاليًا لحياتي المهنية. نتائج مذهلة ورعاية ممتازة!",
-        treatment: "التقويم الشفاف",
+          "ما شاء الله، كانت التجربة العلاجية ممتازة كتير. تعامل الدكتور أيمن راقٍ ومحترف لآخر درجة، وكان ملتزم بالمواعيد وشرح كل خطوة من العلاج بطريقة واضحة. تجربة مريحة ونتائجها رائعة، بنصح فيه وبكل ثقة.",
+        treatment: "التقويم المعدني",
       },
     },
   },
   {
     id: "3",
-    patientName: "Layla Ibrahim",
+    patientName: "Layla Alharbi",
     rating: 5,
     comment:
       "Outstanding expertise and warm patient care. Dr. Ayman explained everything clearly and the treatment timeline was exactly as predicted. My confidence has soared with my new smile!",
     treatment: "Clear Aligners",
     date: "2024-09-08",
-    imageUrl: "/confident-woman-smiling.jpg",
+    imageUrl: "/placeholder-user.jpg",
     translated: {
       en: {
-        patientName: "Layla Ibrahim",
+        patientName: "Layla Alharbi",
         comment:
           "Outstanding expertise and warm patient care. Dr. Ayman explained everything clearly and the treatment timeline was exactly as predicted. My confidence has soared with my new smile!",
         treatment: "Clear Aligners",
       },
       ar: {
-        patientName: "ليلى إبراهيم",
+        patientName: "ليلى الحربي",
         comment:
-          "خبرة رائعة ورعاية دافئة للمرضى. شرح الدكتور أيمن كل شيء بوضوح وكان جدول العلاج مطابقًا تمامًا للتوقعات. ارتفعت ثقتي بنفسي مع ابتسامتي الجديدة!",
+          "تعامل الدكتور أيمن كان راقٍ جدًا، وشرح الخطة العلاجية بكل وضوح من البداية. مدة العلاج كانت مثل ما قال بالضبط، والنتيجة فرّقت معي كثير. مبسوطة بابتسامتي الجديدة وأنصح فيه بكل ثقة.",
         treatment: "التقويم الشفاف",
       },
     },

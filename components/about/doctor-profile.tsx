@@ -33,16 +33,7 @@ export function DoctorProfile({ doctor, lang, dir }: DoctorProfileProps) {
                 <img src={doctor.imageUrl || "/placeholder.svg"} alt={t.name} className="w-full h-auto object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
               </div>
-              {/* Floating badges */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground rounded-2xl p-6 shadow-xl"
-              >
-                <Award className="h-8 w-8 mb-2" />
-                <div className="text-sm font-semibold">{message("platinum_provider")}</div>
-              </motion.div>
+
             </motion.div>
 
             {/* Content */}

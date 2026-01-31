@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { LocaleProvider } from "@/lib/locale-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import FloatingActionButtons from '@/components/floating-action-buttons'
 
 interface LayoutProps {
   children: ReactNode;
@@ -79,6 +80,7 @@ export default async function LangLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <FloatingActionButtons />
       </div>
     </LocaleProvider>
   );

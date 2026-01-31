@@ -12,7 +12,7 @@ import { useLocale } from "@/lib/locale-context";
 
 export function LanguageSwitcher() {
   const { locale, setLocale } = useLocale();
-
+  
   const changeLocale = (newLocale: "en" | "ar") => {
     if (newLocale === locale) return;
 

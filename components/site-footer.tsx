@@ -7,8 +7,6 @@ import { cn } from "@/lib/utils"
 import {
   SiSnapchat,
   SiTiktok,
-  SiLinphone,
-  SiGmail,
   SiInstagram,
   SiX,
   SiYoutube,
@@ -69,11 +67,11 @@ export function SiteFooter() {
             <h3 className="font-semibold">{message("footer_contact")}</h3>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <SiLinphone className="h-4 w-4 text-primary" />
+                <Phone className="h-4 w-4 text-primary mt-0.5" />
                 <span dir="ltr">{message("footer_phone")}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <SiGmail className="h-5 w-5" />
+                <Mail className="h-4 w-4 text-primary mt-0.5" />
                 <span dir="ltr">{message("footer_email")}</span>
               </div>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
