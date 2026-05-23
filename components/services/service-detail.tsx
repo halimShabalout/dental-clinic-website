@@ -1,6 +1,8 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { Check, Clock, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,13 +16,38 @@ interface ServiceDetailProps {
   lang: "en" | "ar";
 }
 
-const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
+const BenefitItem = memo(function BenefitItem({
+  benefit,
+  index,
+  isRtl,
+}: {
+  benefit: string;
+  index: number;
+  isRtl: boolean;
+}) {
+  return (
+    <motion.li
+      initial={{ opacity: 0, x: isRtl ? 20 : -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ delay: index * 0.05, duration: 0.4 }}
+      className="flex items-start gap-3"
+    >
+      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 shrink-0 mt-0.5">
+        <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+      </div>
+      <span className="text-muted-foreground leading-relaxed">{benefit}</span>
+    </motion.li>
+  );
+});
+
+const ServiceDetail = ({ service, lang }: ServiceDetailProps) => {
   const { dir, message } = useLocale();
-  const t = service.translated[lang]; 
+  const t = service.translated[lang];
+  const isRtl = dir === "rtl";
 
   return (
     <div dir={dir}>
-      {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
@@ -32,10 +59,10 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
             >
               <Button variant="ghost" asChild>
                 <Link href={`/${lang}/services`} className="flex items-center">
-                  {dir === "rtl" ? (
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                  {isRtl ? (
+                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                   ) : (
-                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
                   )}
                   {message("service_back")}
                 </Link>
@@ -43,9 +70,8 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
             </motion.div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Content */}
               <motion.div
-                initial={{ opacity: 0, x: dir === "rtl" ? 50 : -50 }}
+                initial={{ opacity: 0, x: isRtl ? 50 : -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 className="space-y-6"
@@ -65,23 +91,25 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
                 </p>
 
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Clock className="h-5 w-5 text-primary" />
+                  <Clock className="h-5 w-5 text-primary shrink-0" aria-hidden="true" />
                   <span className="text-lg">{t.duration}</span>
                 </div>
               </motion.div>
 
-              {/* Image */}
               <motion.div
-                initial={{ opacity: 0, x: dir === "rtl" ? -50 : 50 }}
+                initial={{ opacity: 0, x: isRtl ? -50 : 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 className="relative"
               >
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                  <img
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-square">
+                  <Image
                     src={service.imageUrl || "/placeholder.svg"}
                     alt={t.name}
-                    className="w-full h-auto object-cover"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
                 </div>
@@ -91,15 +119,13 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
         </div>
       </section>
 
-      {/* Details Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto space-y-12">
-            {/* About */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6 }}
             >
               <Card>
@@ -114,11 +140,10 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
               </Card>
             </motion.div>
 
-            {/* Benefits */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6 }}
             >
               <Card>
@@ -128,19 +153,12 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
                 <CardContent>
                   <ul className="grid md:grid-cols-2 gap-4">
                     {t.benefits.map((benefit, index) => (
-                      <motion.li
+                      <BenefitItem
                         key={index}
-                        initial={{ opacity: 0, x: dir === "rtl" ? 20 : -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.05, duration: 0.4 }}
-                        className="flex items-start gap-3"
-                      >
-                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 flex-shrink-0 mt-0.5">
-                          <Check className="h-4 w-4 text-primary" />
-                        </div>
-                        <span className="text-muted-foreground leading-relaxed">{benefit}</span>
-                      </motion.li>
+                        benefit={benefit}
+                        index={index}
+                        isRtl={isRtl}
+                      />
                     ))}
                   </ul>
                 </CardContent>
@@ -150,13 +168,12 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-20 bg-secondary/20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
             className="max-w-3xl mx-auto text-center space-y-6"
           >
@@ -172,7 +189,12 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
               <Button size="lg" asChild className="group">
                 <Link href={`/${lang}/contact`}>
                   {message("service_book_consultation")}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight
+                    className={`h-5 w-5 transition-transform group-hover:translate-x-1 ${
+                      isRtl ? "rotate-180 ml-0 mr-2" : "ml-2"
+                    }`}
+                    aria-hidden="true"
+                  />
                 </Link>
               </Button>
 
@@ -185,5 +207,6 @@ const ServiceDetail = ({ service, lang }: ServiceDetailProps)=> {
       </section>
     </div>
   );
-}
-export default ServiceDetail
+};
+
+export default ServiceDetail;

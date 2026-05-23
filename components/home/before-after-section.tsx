@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,34 +16,56 @@ interface BeforeAfterSectionProps {
 
 const BeforeAfterSection = ({ beforeAfterData, lang }: BeforeAfterSectionProps) => {
   const { message, dir } = useLocale();
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sliderPosition, setSliderPosition] = useState(50);
-
-  const handlePrevious = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? beforeAfterData.length - 1 : prev - 1
-    );
-    setSliderPosition(50);
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev === beforeAfterData.length - 1 ? 0 : prev + 1
-    );
-    setSliderPosition(50);
-  };
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const currentItem = beforeAfterData[currentIndex];
+
+  const goTo = useCallback((index: number) => {
+    setCurrentIndex(index);
+    setSliderPosition(50);
+  }, []);
+
+  const handlePrevious = useCallback(() => {
+    goTo(currentIndex === 0 ? beforeAfterData.length - 1 : currentIndex - 1);
+  }, [currentIndex, beforeAfterData.length, goTo]);
+
+  const handleNext = useCallback(() => {
+    goTo(currentIndex === beforeAfterData.length - 1 ? 0 : currentIndex + 1);
+  }, [currentIndex, beforeAfterData.length, goTo]);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updatePosition = (clientX: number) => {
+      const rect = container.getBoundingClientRect();
+      const percentage = ((clientX - rect.left) / rect.width) * 100;
+      setSliderPosition(Math.max(0, Math.min(100, percentage)));
+    };
+
+    updatePosition(e.clientX);
+    const target = e.currentTarget as HTMLElement;
+    target.setPointerCapture(e.pointerId);
+
+    const onMove = (moveEvent: PointerEvent) => updatePosition(moveEvent.clientX);
+    const onUp = () => {
+      target.removeEventListener("pointermove", onMove);
+      target.removeEventListener("pointerup", onUp);
+    };
+
+    target.addEventListener("pointermove", onMove);
+    target.addEventListener("pointerup", onUp);
+  }, []);
 
   return (
     <section className="py-20 bg-secondary/20" dir={dir}>
       <div className="container mx-auto px-4">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-3xl mx-auto mb-16 space-y-4"
         >
@@ -57,60 +80,58 @@ const BeforeAfterSection = ({ beforeAfterData, lang }: BeforeAfterSectionProps) 
         <div className="max-w-4xl mx-auto">
           <Card className="overflow-hidden">
             <CardContent className="p-0">
-              {/* Slider */}
-              <div className="relative aspect-video bg-muted">
-                {/* After */}
+              <div ref={containerRef} className="relative aspect-video bg-muted select-none">
                 <div
                   className="absolute inset-0"
                   style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
                 >
-                  <img
+                  <Image
                     src={currentItem.afterImageUrl}
                     alt={message("after_label")}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 896px"
+                    className="object-cover"
+                    priority
                   />
                 </div>
 
-                {/* Before */}
                 <div
                   className="absolute inset-0"
                   style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
                 >
-                  <img
+                  <Image
                     src={currentItem.beforeImageUrl}
                     alt={message("before_label")}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 896px"
+                    className="object-cover"
                   />
                 </div>
 
-                {/* Handle */}
                 <div
-                  className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize"
+                  className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize touch-none z-10"
                   style={{ left: `${sliderPosition}%` }}
-                  onMouseDown={(e) => {
-                    const handleMouseMove = (moveEvent: MouseEvent) => {
-                      const rect =
-                        e.currentTarget.parentElement?.getBoundingClientRect();
-                      if (!rect) return;
-                      const x = moveEvent.clientX - rect.left;
-                      const percentage = (x / rect.width) * 100;
-                      setSliderPosition(
-                        Math.max(0, Math.min(100, percentage))
-                      );
-                    };
+                  onPointerDown={handlePointerDown}
+                  role="slider"
+                  aria-valuenow={Math.round(sliderPosition)}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={message("before_after_slider_label")}
+                >
+                  <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center pointer-events-none">
+                    <ChevronLeft className="h-3 w-3 text-gray-600" />
+                    <ChevronRight className="h-3 w-3 text-gray-600" />
+                  </div>
+                </div>
 
-                    const handleMouseUp = () => {
-                      document.removeEventListener("mousemove", handleMouseMove);
-                      document.removeEventListener("mouseup", handleMouseUp);
-                    };
-
-                    document.addEventListener("mousemove", handleMouseMove);
-                    document.addEventListener("mouseup", handleMouseUp);
-                  }}
-                />
+                <div className="absolute top-3 left-3 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none">
+                  {message("after_label")}
+                </div>
+                <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none">
+                  {message("before_label")}
+                </div>
               </div>
 
-              {/* Details */}
               <div className="p-6 space-y-4">
                 <div className="flex justify-between items-center flex-wrap gap-4">
                   <div>
@@ -132,38 +153,27 @@ const BeforeAfterSection = ({ beforeAfterData, lang }: BeforeAfterSectionProps) 
                   </div>
                 </div>
 
-                {/* Navigation */}
                 <div className="flex items-center justify-between pt-4 border-t">
-                  <Button size="icon" variant="outline" onClick={handlePrevious}>
-                    {dir === "rtl" ? (
-                      <ChevronRight className="h-5 w-5" />
-                    ) : (
-                      <ChevronLeft className="h-5 w-5" />
-                    )}
+                  <Button size="icon" variant="outline" onClick={handlePrevious} aria-label={message("previous_label")}>
+                    {dir === "rtl" ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
                   </Button>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2" role="tablist">
                     {beforeAfterData.map((_, i) => (
                       <button
                         key={i}
-                        onClick={() => {
-                          setCurrentIndex(i);
-                          setSliderPosition(50);
-                        }}
-                        className={`h-2 rounded-full transition-all ${i === currentIndex
-                            ? "bg-primary w-8"
-                            : "bg-border w-2"
-                          }`}
+                        role="tab"
+                        aria-selected={i === currentIndex}
+                        onClick={() => goTo(i)}
+                        className={`h-2 rounded-full transition-all ${
+                          i === currentIndex ? "bg-primary w-8" : "bg-border w-2"
+                        }`}
                       />
                     ))}
                   </div>
 
-                  <Button size="icon" variant="outline" onClick={handleNext}>
-                    {dir === "rtl" ? (
-                      <ChevronLeft className="h-5 w-5" />
-                    ) : (
-                      <ChevronRight className="h-5 w-5" />
-                    )}
+                  <Button size="icon" variant="outline" onClick={handleNext} aria-label={message("next_label")}>
+                    {dir === "rtl" ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
                   </Button>
                 </div>
               </div>

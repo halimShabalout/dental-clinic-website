@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -10,29 +11,26 @@ interface HeroSectionProps {
   lang: 'en' | 'ar'
 }
 
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { delay, duration: 0.6, ease: "easeOut" as const },
+})
+
 const HeroSection = ({ lang }: HeroSectionProps) => {
   const { message, dir } = useLocale()
   const isRtl = dir === 'rtl'
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Animated background gradient */}
+
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-background" />
+      <div className="absolute top-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-40 pointer-events-none" />
+      <div className="absolute bottom-20 left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl opacity-30 pointer-events-none" />
 
-      {/* Decorative elements */}
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
-      />
-      <motion.div
-        animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-20 left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
-      />
-
-      <div className="container mx-auto px-2 py-2 relative z-10">
+      <div className="container mx-auto px-4 py-8 relative z-10">
         <div className={`grid lg:grid-cols-2 gap-12 items-center ${isRtl ? 'text-right' : 'text-left'}`}>
+
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: isRtl ? 50 : -50 }}
@@ -40,44 +38,35 @@ const HeroSection = ({ lang }: HeroSectionProps) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className={`space-y-6 ${isRtl ? "lg:order-1" : "lg:order-2"}`}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+            <motion.div {...fadeUp(0.2)}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20"
             >
-              <Sparkles className="h-4 w-4" />
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
               <span className="text-sm font-medium">{message("hero_main")}</span>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
+            <motion.h1 {...fadeUp(0.3)}
               className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-balance"
             >
               {message("hero_title")}
             </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-lg md:text-xl text-muted-foreground text-pretty max-w-xl leading-tight text-balance"
+            <motion.p {...fadeUp(0.4)}
+              className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed"
             >
               {message("hero_subtitle")}
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+            <motion.div {...fadeUp(0.5)}
               className={`flex flex-wrap gap-4 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}
             >
               <Button size="lg" asChild className="group">
                 <Link href={`/${lang}/contact`}>
                   {message("hero_cta")}
-                  <ArrowRight className={`ml-2 h-5 w-5 transition-transform ${isRtl ? 'rotate-180 mr-2 ml-0' : ''}`} />
+                  <ArrowRight
+                    className={`ml-2 h-5 w-5 transition-transform group-hover:translate-x-1 ${isRtl ? 'rotate-180 mr-2 ml-0' : ''}`}
+                    aria-hidden="true"
+                  />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
@@ -93,41 +82,36 @@ const HeroSection = ({ lang }: HeroSectionProps) => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             className={`relative ${isRtl ? "lg:order-2" : "lg:order-1"}`}
           >
-            <motion.div
-              animate={{ y: [0, -20, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative rounded-3xl overflow-hidden shadow-2xl"
-            >
-              <img
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              <Image
                 src="/hero-section-2.webp"
-                alt="Clear dental aligners"
+                alt={message("hero_image_alt") ?? "Clear dental aligners"}
+                width={600}
+                height={600}
+                priority 
                 className="w-full h-auto object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-            </motion.div>
+            </div>
 
             {/* Floating badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1, duration: 0.6 }}
+              transition={{ delay: 1, duration: 0.5 }}
               className={`absolute -bottom-6 ${isRtl ? '-right-2' : '-left-2'} bg-card border border-border rounded-2xl p-6 shadow-xl`}
             >
-              <div
-                className={`flex items-center gap-4 ${isRtl ? "flex-row" : "flex-row-reverse"
-                  }`}
-              >
+              <div className={`flex items-center gap-4 ${isRtl ? "flex-row" : "flex-row-reverse"}`}>
                 <div className="text-4xl font-bold text-primary">23+</div>
-
                 <div className="text-sm text-muted-foreground">
                   <div>{message("experience_years_of")}</div>
-                  <div className="font-semibold text-foreground">
-                    {message("experience_label")}
-                  </div>
+                  <div className="font-semibold text-foreground">{message("experience_label")}</div>
                 </div>
               </div>
             </motion.div>
           </motion.div>
+
         </div>
       </div>
     </section>
