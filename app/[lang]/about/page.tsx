@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 /* =========================
    Page (Server Component)
 ========================= */
-export default async function AboutPage({ params }: PageProps) {
+export default async function AboutPage({ params }: Readonly<PageProps>) {
   const { lang: langParam } = await params;
   const lang: "ar" | "en" = langParam === "ar" ? "ar" : "en";
   const dir = lang === "ar" ? "rtl" : "ltr";

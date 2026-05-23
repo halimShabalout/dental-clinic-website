@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 /* =========================
    Page
 ========================= */
-export default async function ContactPage({ params }: PageProps) {
+export default async function ContactPage({ params }: Readonly<PageProps>) {
   const { lang: routeLang } = await params
   const lang: 'en' | 'ar' = routeLang === 'en' ? 'en' : 'ar'
   return <ContactInfo lang={lang} />;

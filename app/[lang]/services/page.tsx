@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ServicesPage({ params }: PageProps) {
+export default async function ServicesPage({ params }: Readonly<PageProps>) {
   const { lang: routeLang } = await params;
   const lang: "en" | "ar" = routeLang === "en" ? "en" : "ar";
   const services = await getAllServices();

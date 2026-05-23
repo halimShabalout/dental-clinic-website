@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 /* =========================
    Page Component
 ========================= */
-export default async function BlogPage({ params }: PageProps) {
+export default async function BlogPage({ params }: Readonly<PageProps>) {
   const { lang: routeLang } = await params;
   const lang: "en" | "ar" = routeLang === "en" ? "en" : "ar";
   const posts = await getAllBlogPosts();
