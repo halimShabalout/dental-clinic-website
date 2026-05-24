@@ -90,7 +90,7 @@ const ServiceCard = memo(function ServiceCard({
 
 const ServicesSection = ({ lang, services }: ServicesSectionProps) => {
   const { message, dir } = useLocale();
-
+  
   return (
     <section className="py-20" dir={dir}>
       <div className="container mx-auto px-4">

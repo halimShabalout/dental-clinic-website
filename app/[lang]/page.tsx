@@ -44,7 +44,7 @@ export default async function HomePage({ params }: Readonly<PageProps>) {
   const lang: "en" | "ar" = routeLang === "en" ? "en" : "ar"
 
   const services = await getFeaturedServices()
-
+  
   return (
     <>
       {/* Schema.org — MedicalBusiness + Physician + WebSite */}
